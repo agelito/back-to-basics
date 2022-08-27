@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake Generate Debug",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-GNinja",
+                "-DCMAKE_BUILD_TYPE=Debug",
+                "../."
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build"
+            }
+        },
+        {
+            "label": "Ninja Build",
+            "type": "shell",
+            "command": "ninja",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/build",
+            },
+            "dependsOn": [
+                "CMake Generate Debug"
+            ],
+        }
+    ]
+}

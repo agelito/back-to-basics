@@ -80,7 +80,7 @@ After running these commands `Hello, World!` should be printed to the terminal. 
 To track our code changes over time we'll commit the hello_world program using `git`. We don't want to include files built from the source code so we'll also put some folders to be ignored inside the `.gitignore` file.
 
 Open the `.gitignore` file and insert the following:
-```.gitignore
+```gitignore
 bin/
 ```
 

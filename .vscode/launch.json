@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "cppdbg",
+            "request": "launch",
+            "name": "Launch Application",
+            "program": "${workspaceRoot}/build/hello_world",
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "${defaultBuildTask}",
+        }
+    ]
+}
