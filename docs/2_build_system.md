@@ -139,3 +139,9 @@ Define the launch configuration within `vscode/launch.json` file:
 ```
 
 Now when pressing `F5` the application can be debugged, and will stop on any breakpoints in the code.
+
+Don't forget to test this and if all works well commit the changes using git.
+
+```sh
+git add . && git commit -m "chore: add tasks for building and launching the application"
+```
