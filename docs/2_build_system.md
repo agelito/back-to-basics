@@ -51,6 +51,9 @@ git add . && git commit -m "feat: minimum cmake configuration to build hello_wor
 ```
 
 ## Visual Studio Code
+>It's recommended to install the C/C++ Extension Pack for Visual Studio Code before proceeding with setting up the building and debugging tasks. https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack.
+
+
 We can configure tasks to build and debug the application in Visual Studio Code. This will allow us to press F7 to build.
 
 ### Building
