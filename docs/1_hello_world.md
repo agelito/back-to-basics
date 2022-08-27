@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 For now `src/hello_world.c` will just be built with default options. Later on we'll be using `cmake` to configure various build options and settings and not invoke the `clang` compiler manually. 
 ```sh
 # Compile and link the hello_world program.
-clang -o bin/hello_world src/main.c
+clang -o bin/hello_world --std=c11 src/main.c
 
 # Run hello_world
 ./bin/hello_world
