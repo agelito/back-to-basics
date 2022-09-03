@@ -325,18 +325,218 @@ Compiling and running the code now should display a window filled with blue colo
 ## Full diff for this chapter
 
 ```diff
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7164dcf..90d4d68 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
+modified   .vscode/launch.json
+@@ -6,7 +6,7 @@
+             "type": "cppdbg",
+             "request": "launch",
+             "name": "Launch Application",
+-            "program": "${workspaceRoot}/build/hello_world",
++            "program": "${workspaceRoot}/build/back_to_basics",
+             "cwd": "${workspaceRoot}",
+             "preLaunchTask": "${defaultBuildTask}",
+         }
+modified   CMakeLists.txt
 @@ -4,4 +4,8 @@ project(back_to_basics)
  set(CMAKE_C_COMPILER /usr/bin/clang)
  set(CMAKE_C_STANDARD 11)
-
+ 
 -add_executable(hello_world src/hello_world.c)
 +find_package(SDL2 REQUIRED)
 +include_directories(back_to_basics ${SDL2_INCLUDE_DIRS})
 +
 +add_executable(back_to_basics src/main.c src/game_window.c)
 +target_link_libraries(back_to_basics ${SDL2_LIBRARIES})
+new file   src/game_window.c
+@@ -0,0 +1,104 @@
++// game_window.c
++
++#include "game_window.h"
++
++#include <SDL2/SDL.h>
++typedef struct GameWindowInternal {
++    SDL_Window* window_handle;
++    SDL_Surface* surface;
++} GameWindowInternal;
++
++void game_window_update_size(GameWindow* window)
++{
++    SDL_GetWindowSize(window->internal->window_handle,
++                      &window->window_width,
++                      &window->window_height);
++
++    SDL_Renderer* renderer = 
++        SDL_GetRenderer(window->internal->window_handle);
++
++    SDL_GetRendererOutputSize(renderer,
++                              &window->pixel_buffer_width,
++                              &window->pixel_buffer_height);
++}
++
++GameWindow* game_window_create(const char* title, int width, int height)
++{
++    uint32_t window_flags = SDL_WINDOW_RESIZABLE;
++    SDL_Window *sdl_window = SDL_CreateWindow(title,
++                                          SDL_WINDOWPOS_CENTERED,
++                                          SDL_WINDOWPOS_CENTERED,
++                                          width, height,
++                                          window_flags);
++
++    if (!sdl_window)
++    {
++        printf("failed to create window\n");
++        return 0;
++    }
++
++    uintptr_t window_and_internal_size = 
++        sizeof(GameWindow) + sizeof(GameWindowInternal);
++    GameWindow* game_window = malloc(window_and_internal_size);
++    game_window->internal = (GameWindowInternal*)(game_window + 1);
++    game_window->internal->window_handle = sdl_window;
++    game_window->internal->surface = 0;
++
++    game_window->window_width = width;
++    game_window->window_height = height;
++    game_window->pixel_buffer_width = 0;
++    game_window->pixel_buffer_height = 0;
++    game_window->pixels = 0;
++    game_window->flags = GAME_WINDOW_FLAGS_NONE;
++
++    return game_window;
++}
++
++void game_window_destroy(GameWindow* game_window)
++{
++    SDL_DestroyWindow(game_window->internal->window_handle);
++    game_window->internal->window_handle = 0;
++
++    free(game_window);
++}
++
++void game_window_process_events(GameWindow* game_window)
++{
++    SDL_Event event;
++    while(SDL_PollEvent(&event))
++    {
++        switch(event.type)
++        {
++            case SDL_WINDOWEVENT:
++                if (event.window.event == SDL_WINDOWEVENT_SHOWN) {
++                    game_window_update_size(game_window);
++                }
++                if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
++                    game_window_update_size(game_window);
++                }
++                break;
++            case SDL_QUIT:
++                game_window->flags |= GAME_WINDOW_FLAGS_CLOSED;
++                break;
++        }
++    }
++}
++
++void game_window_surface_lock_pixels(GameWindow* game_window)
++{
++    SDL_Surface *surface = 
++        SDL_GetWindowSurface(game_window->internal->window_handle);
++    
++    SDL_LockSurface(surface);
++
++    game_window->internal->surface = surface;
++    game_window->pixels = surface->pixels;
++}
++
++void game_window_surface_unlock_and_update_pixels(GameWindow* game_window)
++{
++    game_window->pixels = 0;
++
++    SDL_UnlockSurface(game_window->internal->surface);
++    SDL_UpdateWindowSurface(game_window->internal->window_handle);
++}
+new file   src/game_window.h
+@@ -0,0 +1,30 @@
++// game_window.h
++
++#ifndef GAME_WINDOW_INCLUDED
++#define GAME_WINDOW_INCLUDED
++
++#include <stdint.h>
++
++typedef struct GameWindow {
++    int32_t window_width;
++    int32_t window_height;
++    int32_t pixel_buffer_width;
++    int32_t pixel_buffer_height;
++    uint8_t flags;
++    uint8_t *pixels;
++
++    struct GameWindowInternal* internal;
++} GameWindow;
++
++enum GameWindowFlags {
++    GAME_WINDOW_FLAGS_NONE = 0,
++    GAME_WINDOW_FLAGS_CLOSED = 1 << 0,
++};
++
++GameWindow* game_window_create();
++void game_window_destroy(GameWindow *game_window);
++void game_window_process_events(GameWindow *game_window);
++void game_window_surface_lock_pixels(GameWindow *game_window);
++void game_window_surface_unlock_and_update_pixels(GameWindow *game_window);
++
++#endif // GAME_WINDOW_INCLUDED
+\ No newline at end of file
+deleted    src/hello_world.c
+@@ -1,8 +0,0 @@
+-#include <stdio.h>
+-
+-int main(int argc, char* argv[]) 
+-{
+-    printf("Hello, World!\n");
+-
+-    return 0;
+-}
+new file   src/main.c
+@@ -0,0 +1,42 @@
++// main.c
++
++#include <SDL2/SDL.h>
++
++#include "game_window.h"
++
++int main(int argc, char* argv[])
++{
++    if (SDL_Init(SDL_INIT_VIDEO) < 0)
++    {
++        printf("failed initializing SDL2\n");
++        return -1;
++    }
++
++    GameWindow* game_window = 
++        game_window_create("back_to_basics", 680, 480);
++
++    while ((game_window->flags & GAME_WINDOW_FLAGS_CLOSED) == 0)
++    {
++        game_window_process_events(game_window);
++
++        game_window_surface_lock_pixels(game_window);
++
++        uint32_t *pixels_32bpp = (uint32_t *)game_window->pixels;
++        for (int y = 0; y < game_window->pixel_buffer_height; y++)
++        {
++            uint32_t row = y * game_window->pixel_buffer_width;
++            for (int x = 0; x < game_window->pixel_buffer_width; x++)
++            {
++                pixels_32bpp[x + row] = 0xff0000ff;
++            }
++        }
++
++        game_window_surface_unlock_and_update_pixels(game_window);
++
++        SDL_Delay(10);
++    }
++
++    SDL_Quit();
++
++    return 0;
++}
 ```
