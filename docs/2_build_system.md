@@ -1,4 +1,4 @@
-# Configuring Build
+# Build System
 To avoid having to manually invoke the `clang` compiler manually each time we want to build the project, as well as allowing dependencies to be specified regardless of which computer or operating system is used we'll set up `cmake` to generate a project and then use `ninja` to build.
 
 `cmake` use a file called `CMakeLists.txt` to determine which dependencies, input files, and outputs should be generated. We'll create a minimal `CMakeLists.txt` file to build our `hello_world` program using that instead.

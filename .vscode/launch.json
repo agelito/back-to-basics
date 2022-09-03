@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "name": "Launch Application",
-            "program": "${workspaceRoot}/build/hello_world",
+            "program": "${workspaceRoot}/build/back_to_basics",
             "cwd": "${workspaceRoot}",
             "preLaunchTask": "${defaultBuildTask}",
         }

@@ -1,0 +1,9 @@
+site_name: Back to Basics
+theme:
+    name: material
+nav:
+    - Home: 'index.md'
+    - Tutorial:
+      - 1. Hello World: '1_hello_world.md'
+      - 2. Build System: '2_build_system.md'
+      - 3. Creating a Window: '3_creating_a_window.md'
