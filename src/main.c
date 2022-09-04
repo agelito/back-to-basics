@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "game_window.h"
+#include "renderer.h"
 
 int main(int argc, char* argv[])
 {
@@ -21,14 +22,39 @@ int main(int argc, char* argv[])
 
         game_window_surface_lock_pixels(game_window);
 
-        uint32_t *pixels_32bpp = (uint32_t *)game_window->pixels;
-        for (int y = 0; y < game_window->pixel_buffer_height; y++)
+        int32_t bytes_per_pixel = 4;
+        renderer_target_buffer pixel_buffer = 
+            renderer_create_target_buffer(game_window->pixel_buffer_width, game_window->pixel_buffer_height, bytes_per_pixel, game_window->pixels);
+
+        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
+
+        if (game_window->pixel_buffer_width != 0)
         {
-            uint32_t row = y * game_window->pixel_buffer_width;
-            for (int x = 0; x < game_window->pixel_buffer_width; x++)
-            {
-                pixels_32bpp[x + row] = 0xff0000ff;
-            }
+            renderer_rect top_left = {
+                0, 0, 32, 32
+            };
+
+            renderer_rect top_right = {
+                pixel_buffer.width - 32,
+                0, 32, 32
+            };
+
+            renderer_rect bottom_left = {
+                0, 
+                pixel_buffer.height - 32,
+                32, 32
+            };
+
+            renderer_rect bottom_right = {
+                pixel_buffer.width - 32,
+                pixel_buffer.height - 32,
+                32, 32
+            };
+
+            renderer_fill_rect(pixel_buffer, top_left, PackColorRGB(255, 0, 0));
+            renderer_fill_rect(pixel_buffer, top_right, PackColorRGB(0, 255, 0));
+            renderer_fill_rect(pixel_buffer, bottom_left, PackColorRGB(0, 255, 255));
+            renderer_fill_rect(pixel_buffer, bottom_right, PackColorRGB(255, 255, 0));
         }
 
         game_window_surface_unlock_and_update_pixels(game_window);
