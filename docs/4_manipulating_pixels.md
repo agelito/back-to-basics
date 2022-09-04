@@ -28,29 +28,29 @@ Start by filling in the header guard defines this is common practice for all hea
 Now replace the `TODO: Declarations goes here` comment with the following struct declaration. This struct will be used to pass information about the pixel buffer we're rendering into to the rendering. This helps keep the number of arguments we need to pass into macros and functions to a minimum. We'll also add a helper function for creating instances of this struct:
 
 ```c
-typedef struct renderer_target_buffer {
+typedef struct RendererTargetBuffer {
     int32_t width;
     int32_t height;
     int32_t bytes_per_pixel;
     uint8_t* pixels;
-} renderer_target_buffer;
+} RendererTargetBuffer;
 
-renderer_target_buffer 
+RendererTargetBuffer 
 renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t* pixels);
 ```
 
-Declare the `renderer_rect` struct below the `renderer_target_buffer` struct declaration:
+Declare the `RendererRect` struct below the `RendererTargetBuffer` struct declaration:
 
 ```c
-typedef struct renderer_rect {
+typedef struct RendererRect {
     int32_t x;
     int32_t y;
     int32_t w;
     int32_t h;
-} renderer_rect;
+} RendererRect;
 ```
 
-Add the following macros below the `renderer_rect` struct. These macros help pack 3 or four channel color values into a single 32 bit integer, as well as indexing the pixel buffer by offset or x,y coordinates:
+Add the following macros below the `RendererRect` struct. These macros help pack 3 or four channel color values into a single 32 bit integer, as well as indexing the pixel buffer by offset or x,y coordinates:
 
 ```c
 // Pack 3 color bytes into one uint32
@@ -59,7 +59,7 @@ Add the following macros below the `renderer_rect` struct. These macros help pac
 // Pack 4 color bytes into one uint32
 #define PackColorRGBA(r, g, b, a) (a & 0xff) << 24 | PackColorRGB(r, g, b)
 
-// Index pixel at x, y coordinates within renderer_target_buffer target
+// Index pixel at x, y coordinates within RendererTargetBuffer target
 #define IndexPixel(x, y, target) (x + y * target.width) * target.bytes_per_pixel
 
 // Put pixel at offset into target
@@ -69,17 +69,17 @@ Add the following macros below the `renderer_rect` struct. These macros help pac
 #define PutPixelXY(target, x, y, color) PutPixelByteOffset(target, IndexPixel(x, y, target), color)
 ```
 
-Below the macro definitions we can add the function declarations. We'll add three functions for now; one to help create the `renderer_target_buffer` structure and the two others to fill entire window or a part of the window with desired color:
+Below the macro definitions we can add the function declarations. We'll add three functions for now; one to help create the `RendererTargetBuffer` structure and the two others to fill entire window or a part of the window with desired color:
 
 ```c
-renderer_target_buffer 
+RendererTargetBuffer 
 renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t* pixels);
 
 void
-renderer_fill(renderer_target_buffer buffer, uint32_t color);
+renderer_fill(RendererTargetBuffer buffer, uint32_t color);
 
 void 
-renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color);
+renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color);
 ```
 
 ### renderer.c
@@ -92,10 +92,10 @@ The implementation of `src/renderer.c` will be fairily straight forward because 
 #include <stdint.h>
 #include "renderer.h"
 
-renderer_target_buffer
+RendererTargetBuffer
 renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t *pixels)
 {
-    renderer_target_buffer target = {
+    RendererTargetBuffer target = {
         width, height, bytes_per_pixel, pixels
     };
 
@@ -103,7 +103,7 @@ renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_p
 }
 
 void 
-renderer_fill(renderer_target_buffer buffer, uint32_t color)
+renderer_fill(RendererTargetBuffer buffer, uint32_t color)
 {
     uint32_t fill_until = buffer.width * buffer.height * buffer.bytes_per_pixel;
     uint32_t per_pixel_add = buffer.bytes_per_pixel;
@@ -114,7 +114,7 @@ renderer_fill(renderer_target_buffer buffer, uint32_t color)
 }
 
 void 
-renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color)
+renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color)
 {
     for (int y = rect.y; y < rect.y + rect.h; y++)
     {
@@ -134,29 +134,29 @@ We'll make some changes to `src/main.c` to test the new `src/renderer.c` impleme
 Update `src/main.c` with the following, put this code between the `game_window_surface_lock_pixels(game_window);` and `game_window_surface_unlock_and_update_pixels(game_window);` lines:
 ```c
 int32_t bytes_per_pixel = 4;
-renderer_target_buffer pixel_buffer = 
+RendererTargetBuffer pixel_buffer = 
     renderer_create_target_buffer(game_window->pixel_buffer_width, game_window->pixel_buffer_height, bytes_per_pixel, game_window->pixels);
 
 renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
 
 if (game_window->pixel_buffer_width != 0)
 {
-    renderer_rect top_left = {
+    RendererRect top_left = {
         0, 0, 32, 32
     };
 
-    renderer_rect top_right = {
+    RendererRect top_right = {
         pixel_buffer.width - 32,
         0, 32, 32
     };
 
-    renderer_rect bottom_left = {
+    RendererRect bottom_left = {
         0, 
         pixel_buffer.height - 32,
         32, 32
     };
 
-    renderer_rect bottom_right = {
+    RendererRect bottom_right = {
         pixel_buffer.width - 32,
         pixel_buffer.height - 32,
         32, 32
@@ -211,7 +211,7 @@ modified   src/main.c
 -        uint32_t *pixels_32bpp = (uint32_t *)game_window->pixels;
 -        for (int y = 0; y < game_window->pixel_buffer_height; y++)
 +        int32_t bytes_per_pixel = 4;
-+        renderer_target_buffer pixel_buffer = 
++        RendererTargetBuffer pixel_buffer = 
 +            renderer_create_target_buffer(game_window->pixel_buffer_width, game_window->pixel_buffer_height, bytes_per_pixel, game_window->pixels);
 +
 +        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
@@ -223,22 +223,22 @@ modified   src/main.c
 -            {
 -                pixels_32bpp[x + row] = 0xff0000ff;
 -            }
-+            renderer_rect top_left = {
++            RendererRect top_left = {
 +                0, 0, 32, 32
 +            };
 +
-+            renderer_rect top_right = {
++            RendererRect top_right = {
 +                pixel_buffer.width - 32,
 +                0, 32, 32
 +            };
 +
-+            renderer_rect bottom_left = {
++            RendererRect bottom_left = {
 +                0, 
 +                pixel_buffer.height - 32,
 +                32, 32
 +            };
 +
-+            renderer_rect bottom_right = {
++            RendererRect bottom_right = {
 +                pixel_buffer.width - 32,
 +                pixel_buffer.height - 32,
 +                32, 32
@@ -258,10 +258,10 @@ new file   src/renderer.c
 +#include <stdint.h>
 +#include "renderer.h"
 +
-+renderer_target_buffer
++RendererTargetBuffer
 +renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t *pixels)
 +{
-+    renderer_target_buffer target = {
++    RendererTargetBuffer target = {
 +        width, height, bytes_per_pixel, pixels
 +    };
 +
@@ -269,7 +269,7 @@ new file   src/renderer.c
 +}
 +
 +void 
-+renderer_fill(renderer_target_buffer buffer, uint32_t color)
++renderer_fill(RendererTargetBuffer buffer, uint32_t color)
 +{
 +    uint32_t fill_until = buffer.width * buffer.height * buffer.bytes_per_pixel;
 +    uint32_t per_pixel_add = buffer.bytes_per_pixel;
@@ -280,7 +280,7 @@ new file   src/renderer.c
 +}
 +
 +void 
-+renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color)
++renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color)
 +{
 +    for (int y = rect.y; y < rect.y + rect.h; y++)
 +    {
@@ -298,19 +298,19 @@ new file   src/renderer.h
 +#ifndef RENDERER_INCLUDED
 +#define RENDERER_INCLUDED
 +
-+typedef struct renderer_target_buffer {
++typedef struct RendererTargetBuffer {
 +    int32_t width;
 +    int32_t height;
 +    int32_t bytes_per_pixel;
 +    uint8_t* pixels;
-+} renderer_target_buffer;
++} RendererTargetBuffer;
 +
-+typedef struct renderer_rect {
++typedef struct RendererRect {
 +    int32_t x;
 +    int32_t y;
 +    int32_t w;
 +    int32_t h;
-+} renderer_rect;
++} RendererRect;
 +
 +// Pack 3 color bytes into one uint32
 +#define PackColorRGB(r, g, b) (r & 0xff) << 16 | (g & 0xff) << 8 | (b & 0xff)
@@ -318,7 +318,7 @@ new file   src/renderer.h
 +// Pack 4 color bytes into one uint32
 +#define PackColorRGBA(r, g, b, a) (a & 0xff) << 24 | PackColorRGB(r, g, b)
 +
-+// Index pixel at x, y coordinates within renderer_target_buffer target
++// Index pixel at x, y coordinates within RendererTargetBuffer target
 +#define IndexPixel(x, y, target) (x + y * target.width) * target.bytes_per_pixel
 +
 +// Put pixel at offset into target
@@ -327,14 +327,14 @@ new file   src/renderer.h
 +// Put pixel at x,y into target
 +#define PutPixelXY(target, x, y, color) PutPixelByteOffset(target, IndexPixel(x, y, target), color)
 +
-+renderer_target_buffer 
++RendererTargetBuffer 
 +renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t* pixels);
 +
 +void
-+renderer_fill(renderer_target_buffer buffer, uint32_t color);
++renderer_fill(RendererTargetBuffer buffer, uint32_t color);
 +
 +void 
-+renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color);
++renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color);
 +
 +#endif // RENDERER_INCLUDED
 \ No newline at end of file

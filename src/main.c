@@ -23,29 +23,29 @@ int main(int argc, char* argv[])
         game_window_surface_lock_pixels(game_window);
 
         int32_t bytes_per_pixel = 4;
-        renderer_target_buffer pixel_buffer = 
+        RendererTargetBuffer pixel_buffer = 
             renderer_create_target_buffer(game_window->pixel_buffer_width, game_window->pixel_buffer_height, bytes_per_pixel, game_window->pixels);
 
         renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
 
         if (game_window->pixel_buffer_width != 0)
         {
-            renderer_rect top_left = {
+            RendererRect top_left = {
                 0, 0, 32, 32
             };
 
-            renderer_rect top_right = {
+            RendererRect top_right = {
                 pixel_buffer.width - 32,
                 0, 32, 32
             };
 
-            renderer_rect bottom_left = {
+            RendererRect bottom_left = {
                 0, 
                 pixel_buffer.height - 32,
                 32, 32
             };
 
-            renderer_rect bottom_right = {
+            RendererRect bottom_right = {
                 pixel_buffer.width - 32,
                 pixel_buffer.height - 32,
                 32, 32
