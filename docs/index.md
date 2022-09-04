@@ -7,6 +7,6 @@ Some knowledge of C is expected and the operating system used by the author is A
 
 The end goal of this isn't the game itself, so the tutorial will not focus much on creating a great game, but rather the fundamental building blocks. Also it should be considered mostly academic since there's better ways of rendering games using modern graphic card API's (DirectX/Vulkan/OpenGL/etc).
 
-The tutorial is split into multiple chapters. Each chapter is of arbitrary size and I'm writing them as I go along implementing each future myself.
+The tutorial is split into multiple chapters. Each chapter is of arbitrary size and I'm writing them as I go along implementing each feature myself.
 
 >** SDL2 will be used for creating a window which in turn might use the graphics card to display the pixels we've defined to screen. This choice was made because the focus of this tutorial shouldn't be interacting with the OS API's for opening and managing windows.

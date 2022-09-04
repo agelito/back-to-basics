@@ -1,4 +1,5 @@
 site_name: Back to Basics
+repo_url: https://github.com/agelito/back-to-basics
 theme:
     name: material
 nav:
@@ -7,3 +8,4 @@ nav:
       - 1. Hello World: '1_hello_world.md'
       - 2. Build System: '2_build_system.md'
       - 3. Creating a Window: '3_creating_a_window.md'
+      - 4. Manipulating Pixels: '4_manipulating_pixels.md'
