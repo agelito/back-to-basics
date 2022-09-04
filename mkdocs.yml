@@ -2,6 +2,8 @@ site_name: Back to Basics
 repo_url: https://github.com/agelito/back-to-basics
 theme:
     name: material
+plugins:
+    - git-authors
 nav:
     - Home: 'index.md'
     - Tutorial:
