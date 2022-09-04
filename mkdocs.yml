@@ -1,5 +1,6 @@
 site_name: Back to Basics
 repo_url: https://github.com/agelito/back-to-basics
+edit_uri: ""
 theme:
     name: material
 plugins:
