@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
         RendererTargetBuffer pixel_buffer = 
             renderer_create_target_buffer(game_window->pixel_buffer_width, game_window->pixel_buffer_height, bytes_per_pixel, game_window->pixels);
 
-        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
+        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 0));
 
         if (game_window->pixel_buffer_width != 0)
         {
@@ -55,6 +55,21 @@ int main(int argc, char* argv[])
             renderer_fill_rect(pixel_buffer, top_right, PackColorRGB(0, 255, 0));
             renderer_fill_rect(pixel_buffer, bottom_left, PackColorRGB(0, 255, 255));
             renderer_fill_rect(pixel_buffer, bottom_right, PackColorRGB(255, 255, 0));
+
+            RendererPoint center = { 
+                pixel_buffer.width / 2,
+                pixel_buffer.height / 2
+            };
+            RendererTriangle center_triangle = {
+                {center.x, center.y - 128},
+                {center.x + 128, center.y + 128}, 
+                {center.x - 128, center.y + 128},
+                PackColorRGB(255, 0, 0),
+                PackColorRGB(0, 255, 0),
+                PackColorRGB(0, 0, 255)
+            };
+
+            renderer_fill_triangle(pixel_buffer, center_triangle);
         }
 
         game_window_surface_unlock_and_update_pixels(game_window);
