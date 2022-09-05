@@ -3,6 +3,7 @@ repo_url: https://github.com/agelito/back-to-basics
 edit_uri: ""
 theme:
     name: material
+    custom_dir: docs/overrides
 plugins:
     - git-authors
 nav:
