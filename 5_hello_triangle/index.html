@@ -1,0 +1,934 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.1, mkdocs-material-8.4.2">
+    
+    
+      
+        <title>5. Hello Triangle - Back to Basics</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.69437709.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hello-triangle" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Back to Basics" class="md-header__button md-logo" aria-label="Back to Basics" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Back to Basics
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              5. Hello Triangle
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/agelito/back-to-basics" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Back to Basics" class="md-nav__button md-logo" aria-label="Back to Basics" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Back to Basics
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/agelito/back-to-basics" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Tutorial
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Tutorial" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tutorial
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_hello_world/" class="md-nav__link">
+        1. Hello World
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_build_system/" class="md-nav__link">
+        2. Build System
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_creating_a_window/" class="md-nav__link">
+        3. Creating a Window
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_manipulating_pixels/" class="md-nav__link">
+        4. Manipulating Pixels
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          5. Hello Triangle
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        5. Hello Triangle
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rendering-a-triangle" class="md-nav__link">
+    Rendering a Triangle
+  </a>
+  
+    <nav class="md-nav" aria-label="Rendering a Triangle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rendererh" class="md-nav__link">
+    renderer.h
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendererc" class="md-nav__link">
+    renderer.c
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#math_utilsh" class="md-nav__link">
+    math_utils.h
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mainc" class="md-nav__link">
+    main.c
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-colors" class="md-nav__link">
+    Adding Colors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-diff-for-this-chapter" class="md-nav__link">
+    Full diff for this chapter
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rendering-a-triangle" class="md-nav__link">
+    Rendering a Triangle
+  </a>
+  
+    <nav class="md-nav" aria-label="Rendering a Triangle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rendererh" class="md-nav__link">
+    renderer.h
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rendererc" class="md-nav__link">
+    renderer.c
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#math_utilsh" class="md-nav__link">
+    math_utils.h
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mainc" class="md-nav__link">
+    main.c
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-colors" class="md-nav__link">
+    Adding Colors
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-diff-for-this-chapter" class="md-nav__link">
+    Full diff for this chapter
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="hello-triangle">Hello Triangle</h1>
+<p>The basic building block of any 3d rendering is the triangle. Even the most complex 3d scenes in AAA games is composed of thousands or millions of tiny triangles. This chapter will be like a "Hello, World" graphics programming edition. All our rendering will still be done in screen space, but this is still a huge milestone.</p>
+<p>We'll introduce more struct declarations in the renderer and also add a few math utility macros. Finally we'll add code to <code>src/main.c</code> to display a single triangle.</p>
+<h2 id="rendering-a-triangle">Rendering a Triangle</h2>
+<p>To start off we'll add the necessary structures and functions to the renderer. One function in particular I will try to explain extra clearly, because the way it works almost feels magical. </p>
+<h3 id="rendererh">renderer.h</h3>
+<p>Add the following to <code>src/renderer.h</code>:</p>
+<pre><code class="language-c">typedef struct RendererPoint {
+    int32_t x;
+    int32_t y;
+} RendererPoint;
+
+typedef struct RendererTriangle {
+    RendererPoint p0;
+    RendererPoint p1;
+    RendererPoint p2;
+} RendererTriangle;
+
+void 
+renderer_fill_triangle(RendererTargetBuffer buffer, RendererTriangle triangle, uint32_t color);
+</code></pre>
+<p>These should all be fairly self explanatory, the <code>RendererPoint</code> allowing us to hold a single (x, y) coordinate pair as well as the <code>RendererTriangle</code> with one point for each corner. Last but not least the function we'll use to render a single triangle.</p>
+<h3 id="rendererc">renderer.c</h3>
+<p>Add this function below the <code>#include</code> statements in <code>src/renderer.c</code>:</p>
+<pre><code class="language-c">static inline int32_t 
+signed_area2(RendererPoint p0, RendererPoint p1, RendererPoint p2)
+{
+    return (p1.x - p0.x) * (p2.y - p0.y) -
+        (p1.y - p0.y) * (p2.x - p0.x);
+}
+</code></pre>
+<p>This function will give us the squared signed area based on the three <code>RendererPoints</code> passed to it. This will alow us to determine if a point is inside or outside the three edges of a triangle, as well as how far inside the point is.</p>
+<p>Mathematically we're calculating the determinant of a 2x2 matrix which gives us the signed area squared of the parallelogram spanned by the A, B, C points or put in different terms, the distance of C from the line A&lt;-&gt;B:</p>
+<pre><code>| Ax , Bx , Cx |
+| Ay , By , Cy | = signed_area2(A, B, C)
+| 1  , 1  , 1  |
+
+| Bx-Ax , Cx-Ax | = (Bx-Ax) * (Cy-Ay) -
+| By-Ay , Cy-Ay |   (By-Ay) * (Cx-Ax)
+</code></pre>
+<p>Now let's add the <code>renderer_fill_triangle</code> function. This function will determine the rectangle encapsulating the triangle and iterate through all pixels within. Before entering the loop we're using the <code>signed_area_2</code> to determine the barycentric coordinates for each triangle edge. This allows us to instead of doing the expensive calculation inside the inner loop we can just add the calculated increment each iteration. For now this is only used for the position of the pixels but the same concept can be applied to any value we want to interpolate (for example colors or texture coordinates). We know that as long as all three barycentric coordinates is positive the pixel is within the triangle.</p>
+<pre><code class="language-c">void
+renderer_fill_triangle(RendererTargetBuffer buffer, RendererTriangle triangle, uint32_t color)
+{
+    RendererPoint p0 = triangle.p0;
+    RendererPoint p1 = triangle.p1;
+    RendererPoint p2 = triangle.p2;
+
+    int32_t min_x = Min3(p0.x, p1.x, p2.x);
+    int32_t max_x = Max3(p0.x, p1.x, p2.x);
+    int32_t min_y = Min3(p0.y, p1.y, p2.y);
+    int32_t max_y = Max3(p0.y, p1.y, p2.y);
+
+    int32_t a12 = p1.y - p2.y; int32_t b12 = p2.x - p1.x;
+    int32_t a20 = p2.y - p0.y; int32_t b20 = p0.x - p2.x;
+    int32_t a01 = p0.y - p1.y; int32_t b01 = p1.x - p0.x;
+
+    RendererPoint test_p = { min_x, min_y };
+
+    int32_t bcoord_row0 = signed_area2(p1, p2, test_p);
+    int32_t bcoord_row1 = signed_area2(p2, p0, test_p);
+    int32_t bcoord_row2 = signed_area2(p0, p1, test_p);
+
+    for(test_p.y = min_y; test_p.y &lt; max_y; test_p.y++)
+    {
+        int32_t bcoord0 = bcoord_row0;
+        int32_t bcoord1 = bcoord_row1;
+        int32_t bcoord2 = bcoord_row2;
+
+        for(test_p.x = min_x; test_p.x &lt; max_x; test_p.x++)
+        {
+            if ((bcoord0|bcoord1|bcoord2) &gt;= 0)
+            {
+                PutPixelXY(buffer, test_p.x, test_p.y, color);
+            }
+
+            bcoord0 += a12;
+            bcoord1 += a20;
+            bcoord2 += a01;
+        }
+
+        bcoord_row0 += b12;
+        bcoord_row1 += b20;
+        bcoord_row2 += b01;
+    }
+}
+</code></pre>
+<p>This code wont compile just yet because we're using some utility macros to get the minimum and maximum values from three distinct values. Let's go ahead and create the <code>src/math_utils.h</code> file.</p>
+<pre><code class="language-sh">touch src/math_utils.h
+</code></pre>
+<h3 id="math_utilsh">math_utils.h</h3>
+<p>Add the following to <code>src/math_utils.h</code>:</p>
+<pre><code class="language-c">// math_utils.h
+
+#ifndef MATH_UTILS_INCLUDED
+#define MATH_UTILS_INCLUDED
+
+#define Min(x, y) (x &lt; y ? x : y)
+#define Min3(x, y, z) Min(x, Min(y, z))
+
+#define Max(x, y) (x &gt; y ? x : y)
+#define Max3(x, y, z) Max(x, Max(y, z))
+
+#endif // MATH_UTILS_INCLUDED
+</code></pre>
+<p>And finally include the file in <code>src/renderer.c</code>:</p>
+<pre><code class="language-c">#include &quot;math_utils.h&quot;
+</code></pre>
+<h3 id="mainc">main.c</h3>
+<p>All that's left now is calling the <code>renderer_fill_triangle</code> function. Add this code below the <code>renderer_fill_rect</code> function calls:</p>
+<pre><code class="language-c">RendererPoint center = { 
+    pixel_buffer.width / 2,
+    pixel_buffer.height / 2
+};
+RendererTriangle center_triangle = {
+    {center.x, center.y - 64},
+    {center.x + 64, center.y + 64}, 
+    {center.x - 64, center.y + 64}
+};
+
+renderer_fill_triangle(pixel_buffer, center_triangle, PackColorRGB(255, 255, 255));
+</code></pre>
+<p>This will render a white triangle in the center of the window.</p>
+<p><img alt="white triangle" src="../5_assets/white_triangle.png" /></p>
+<h2 id="adding-colors">Adding Colors</h2>
+<p>Just rendering single colored triangles is going to get boring, so let's add some per vertex coloring.</p>
+<p>Start by modifying the <code>RendererTriangle</code> structure inside <code>src/renderer.h</code> to include one color for each corner:</p>
+<pre><code class="language-c">typedef struct RendererTriangle {
+    RendererPoint p0;
+    RendererPoint p1;
+    RendererPoint p2;
+    uint32_t c0;
+    uint32_t c1;
+    uint32_t c2;
+} RendererTriangle;
+</code></pre>
+<p>Also add macro to help unpack the individual color bytes from a 32-bit color integer:</p>
+<pre><code class="language-c">// Unpack 3 color bytes from one uint32
+#define UnpackColorRGB(color, r, g, b) r=(color&gt;&gt;16)&amp;0xff;g=(color&gt;&gt;8)&amp;0xff;b=(color&gt;&gt;0)&amp;0xff
+</code></pre>
+<p>Now in <code>src/renderer.c</code> add the code to set up color interpolation as we render our triangle. Add the following below <code>int32_t bcoord_row2 = signed_area2(p0, p1, test_p);</code>:</p>
+<pre><code class="language-c">int32_t total_area2 = bcoord_row0 + bcoord_row1 + bcoord_row2;
+float total_area2_inv = 1.0f / total_area2;
+
+uint8_t color_r0; uint8_t color_r1; uint8_t color_r2;
+uint8_t color_g0; uint8_t color_g1; uint8_t color_g2;
+uint8_t color_b0; uint8_t color_b1; uint8_t color_b2;
+
+UnpackColorRGB(triangle.c0, color_r0, color_g0, color_b0);
+UnpackColorRGB(triangle.c1, color_r1, color_g1, color_b1);
+UnpackColorRGB(triangle.c2, color_r2, color_g2, color_b2);
+
+int32_t color_base_r0 = (int32_t)(color_r0 &lt;&lt; 18);
+int32_t color_base_g0 = (int32_t)(color_g0 &lt;&lt; 18);
+int32_t color_base_b0 = (int32_t)(color_b0 &lt;&lt; 18);
+
+int32_t color_r10 = (int32_t)(((color_r1 - color_r0) &lt;&lt; 18) * total_area2_inv);
+int32_t color_r20 = (int32_t)(((color_r2 - color_r0) &lt;&lt; 18) * total_area2_inv);
+int32_t color_g10 = (int32_t)(((color_g1 - color_g0) &lt;&lt; 18) * total_area2_inv);
+int32_t color_g20 = (int32_t)(((color_g2 - color_g0) &lt;&lt; 18) * total_area2_inv);
+int32_t color_b10 = (int32_t)(((color_b1 - color_b0) &lt;&lt; 18) * total_area2_inv);
+int32_t color_b20 = (int32_t)(((color_b2 - color_b0) &lt;&lt; 18) * total_area2_inv);
+</code></pre>
+<p>Knowing each color channel is just 8 bits of data we shift up each channel by 18 bits. This allows more precision as we interpolate the color across the triangle.</p>
+<p>Add the pixel color calculation inside the inner loop rendering the triangle, within the <code>if ((bcoord0|bcoord1|bcoord2) &gt;= 0)</code> conditional block:</p>
+<pre><code class="language-c">uint8_t color_r = (uint8_t)((color_base_r0 + bcoord1 * color_r10 + bcoord2 * color_r20) &gt;&gt; 18);
+uint8_t color_g = (uint8_t)((color_base_g0 + bcoord1 * color_g10 + bcoord2 * color_g20) &gt;&gt; 18);
+uint8_t color_b = (uint8_t)((color_base_b0 + bcoord1 * color_b10 + bcoord2 * color_b20) &gt;&gt; 18);
+uint32_t pixel_color = PackColorRGB(color_r, color_g, color_b);
+
+PutPixelXY(buffer, test_p.x, test_p.y, pixel_color);
+</code></pre>
+<p>Finallly remove the single color parameter from the <code>renderer_fill_triangle</code> function remember to modify both the <code>src/renderer.c</code> and <code>src/renderer.h</code> files:</p>
+<pre><code class="language-c">// renderer.h
+void 
+renderer_fill_triangle(RendererTargetBuffer buffer, RendererTriangle triangle);
+
+// renderer.c
+void
+renderer_fill_triangle(RendererTargetBuffer buffer, RendererTriangle triangle) 
+{
+    // ...
+}
+
+</code></pre>
+<p>Now the last piece of this puzzle is to make some changes in <code>src/main.c</code> to render the new fancy colored triangle, we'll change the background fill color to black to make the triangle colors stand out more and also make the triangle bigger:</p>
+<pre><code class="language-c">// Replace the old blue color:
+renderer_fill(pixel_buffer, PackColorRGB(0, 0, 0));
+
+// Replace the code to render the white triangle:
+RendererTriangle center_triangle = {
+    {center.x, center.y - 128},
+    {center.x + 128, center.y + 128}, 
+    {center.x - 128, center.y + 128},
+    PackColorRGB(255, 0, 0),
+    PackColorRGB(0, 255, 0),
+    PackColorRGB(0, 0, 255)
+};
+
+renderer_fill_triangle(pixel_buffer, center_triangle);
+</code></pre>
+<p>Isn't that pretty!</p>
+<p><img alt="colored triangle" src="../5_assets/colored_triangle.png" /></p>
+<h2 id="full-diff-for-this-chapter">Full diff for this chapter</h2>
+<pre><code class="language-diff">diff --git a/src/main.c b/src/main.c
+index a904a2a..3f124c9 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
+         RendererTargetBuffer pixel_buffer = 
+             renderer_create_target_buffer(game_window-&gt;pixel_buffer_width, game_window-&gt;pixel_buffer_height, bytes_per_pixel, game_window-&gt;pixels);
+
+-        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
++        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 0));
+
+         if (game_window-&gt;pixel_buffer_width != 0)
+         {
+@@ -55,6 +55,21 @@ int main(int argc, char* argv[])
+             renderer_fill_rect(pixel_buffer, top_right, PackColorRGB(0, 255, 0));
+             renderer_fill_rect(pixel_buffer, bottom_left, PackColorRGB(0, 255, 255));
+             renderer_fill_rect(pixel_buffer, bottom_right, PackColorRGB(255, 255, 0));
++
++            RendererPoint center = { 
++                pixel_buffer.width / 2,
++                pixel_buffer.height / 2
++            };
++            RendererTriangle center_triangle = {
++                {center.x, center.y - 128},
++                {center.x + 128, center.y + 128}, 
++                {center.x - 128, center.y + 128},
++                PackColorRGB(255, 0, 0),
++                PackColorRGB(0, 255, 0),
++                PackColorRGB(0, 0, 255)
++            };
++
++            renderer_fill_triangle(pixel_buffer, center_triangle);
+         }
+
+         game_window_surface_unlock_and_update_pixels(game_window);
+diff --git a/src/math_utils.h b/src/math_utils.h
+new file mode 100644
+index 0000000..7cac0fa
+--- /dev/null
++++ b/src/math_utils.h
+@@ -0,0 +1,12 @@
++// math_utils.h
++
++#ifndef MATH_UTILS_INCLUDED
++#define MATH_UTILS_INCLUDED
++
++#define Min(x, y) (x &lt; y ? x : y)
++#define Min3(x, y, z) Min(x, Min(y, z))
++
++#define Max(x, y) (x &gt; y ? x : y)
++#define Max3(x, y, z) Max(x, Max(y, z))
++
++#endif // MATH_UTILS_INCLUDED
+\ No newline at end of file
+diff --git a/src/renderer.c b/src/renderer.c
+index 829c826..a5362ae 100644
+--- a/src/renderer.c
++++ b/src/renderer.c
+@@ -2,6 +2,14 @@
+
+ #include &lt;stdint.h&gt;
+ #include &quot;renderer.h&quot;
++#include &quot;math_utils.h&quot;
++
++static inline int32_t 
++signed_area2(RendererPoint p0, RendererPoint p1, RendererPoint p2)
++{
++    return (p1.x - p0.x) * (p2.y - p0.y) -
++        (p1.y - p0.y) * (p2.x - p0.x);
++}
+
+ RendererTargetBuffer
+ renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t *pixels)
+@@ -34,4 +42,77 @@ renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t colo
+             PutPixelXY(buffer, x, y, color);
+         }
+     }
++}
++
++void
++renderer_fill_triangle(RendererTargetBuffer buffer, RendererTriangle triangle)
++{
++    RendererPoint p0 = triangle.p0;
++    RendererPoint p1 = triangle.p1;
++    RendererPoint p2 = triangle.p2;
++
++    int32_t min_x = Min3(p0.x, p1.x, p2.x);
++    int32_t max_x = Max3(p0.x, p1.x, p2.x);
++    int32_t min_y = Min3(p0.y, p1.y, p2.y);
++    int32_t max_y = Max3(p0.y, p1.y, p2.y);
++
++    int32_t a12 = p1.y - p2.y; int32_t b12 = p2.x - p1.x;
++    int32_t a20 = p2.y - p0.y; int32_t b20 = p0.x - p2.x;
++    int32_t a01 = p0.y - p1.y; int32_t b01 = p1.x - p0.x;
++
++    RendererPoint test_p = { min_x, min_y };
++
++    int32_t bcoord_row0 = signed_area2(p1, p2, test_p);
++    int32_t bcoord_row1 = signed_area2(p2, p0, test_p);
++    int32_t bcoord_row2 = signed_area2(p0, p1, test_p);
++    
++    int32_t total_area2 = bcoord_row0 + bcoord_row1 + bcoord_row2;
++    float total_area2_inv = 1.0f / total_area2;
++
++    uint8_t color_r0; uint8_t color_r1; uint8_t color_r2;
++    uint8_t color_g0; uint8_t color_g1; uint8_t color_g2;
++    uint8_t color_b0; uint8_t color_b1; uint8_t color_b2;
++
++    UnpackColorRGB(triangle.c0, color_r0, color_g0, color_b0);
++    UnpackColorRGB(triangle.c1, color_r1, color_g1, color_b1);
++    UnpackColorRGB(triangle.c2, color_r2, color_g2, color_b2);
++
++    int32_t color_base_r0 = (int32_t)(color_r0 &lt;&lt; 18);
++    int32_t color_base_g0 = (int32_t)(color_g0 &lt;&lt; 18);
++    int32_t color_base_b0 = (int32_t)(color_b0 &lt;&lt; 18);
++
++    int32_t color_r10 = (int32_t)(((color_r1 - color_r0) &lt;&lt; 18) * total_area2_inv);
++    int32_t color_r20 = (int32_t)(((color_r2 - color_r0) &lt;&lt; 18) * total_area2_inv);
++    int32_t color_g10 = (int32_t)(((color_g1 - color_g0) &lt;&lt; 18) * total_area2_inv);
++    int32_t color_g20 = (int32_t)(((color_g2 - color_g0) &lt;&lt; 18) * total_area2_inv);
++    int32_t color_b10 = (int32_t)(((color_b1 - color_b0) &lt;&lt; 18) * total_area2_inv);
++    int32_t color_b20 = (int32_t)(((color_b2 - color_b0) &lt;&lt; 18) * total_area2_inv);
++
++    for(test_p.y = min_y; test_p.y &lt; max_y; test_p.y++)
++    {
++        int32_t bcoord0 = bcoord_row0;
++        int32_t bcoord1 = bcoord_row1;
++        int32_t bcoord2 = bcoord_row2;
++
++        for(test_p.x = min_x; test_p.x &lt; max_x; test_p.x++)
++        {
++            if ((bcoord0|bcoord1|bcoord2) &gt;= 0)
++            {
++                uint8_t color_r = (uint8_t)((color_base_r0 + bcoord1 * color_r10 + bcoord2 * color_r20) &gt;&gt; 18);
++                uint8_t color_g = (uint8_t)((color_base_g0 + bcoord1 * color_g10 + bcoord2 * color_g20) &gt;&gt; 18);
++                uint8_t color_b = (uint8_t)((color_base_b0 + bcoord1 * color_b10 + bcoord2 * color_b20) &gt;&gt; 18);
++                uint32_t pixel_color = PackColorRGB(color_r, color_g, color_b);
++
++                PutPixelXY(buffer, test_p.x, test_p.y, pixel_color);
++            }
++
++            bcoord0 += a12;
++            bcoord1 += a20;
++            bcoord2 += a01;
++        }
++
++        bcoord_row0 += b12;
++        bcoord_row1 += b20;
++        bcoord_row2 += b01;
++    }
+ }
+\ No newline at end of file
+diff --git a/src/renderer.h b/src/renderer.h
+index e4d1f19..2c7f3e7 100644
+--- a/src/renderer.h
++++ b/src/renderer.h
+@@ -17,12 +17,29 @@ typedef struct RendererRect {
+     int32_t h;
+ } RendererRect;
+
++typedef struct RendererPoint {
++    int32_t x;
++    int32_t y;
++} RendererPoint;
++
++typedef struct RendererTriangle {
++    RendererPoint p0;
++    RendererPoint p1;
++    RendererPoint p2;
++    uint32_t c0;
++    uint32_t c1;
++    uint32_t c2;
++} RendererTriangle;
++
+ // Pack 3 color bytes into one uint32
+ #define PackColorRGB(r, g, b) (r &amp; 0xff) &lt;&lt; 16 | (g &amp; 0xff) &lt;&lt; 8 | (b &amp; 0xff)
+
+ // Pack 4 color bytes into one uint32
+ #define PackColorRGBA(r, g, b, a) (a &amp; 0xff) &lt;&lt; 24 | PackColorRGB(r, g, b)
+
++// Unpack 3 color bytes from one uint32
++#define UnpackColorRGB(color, r, g, b) r=(color&gt;&gt;16)&amp;0xff;g=(color&gt;&gt;8)&amp;0xff;b=(color&gt;&gt;0)&amp;0xff
++
+ // Index pixel at x, y coordinates within RendererTargetBuffer target
+ #define IndexPixel(x, y, target) (x + y * target.width) * target.bytes_per_pixel
+
+@@ -41,4 +58,7 @@ renderer_fill(RendererTargetBuffer buffer, uint32_t color);
+ void 
+ renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color);
+
++void 
++renderer_fill_triangle(RendererTargetBuffer buffer, RendererTriangle triangle);
++
+ #endif // RENDERER_INCLUDED
+\ No newline at end of file
+
+</code></pre>
+
+
+
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../4_manipulating_pixels/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 4. Manipulating Pixels" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              4. Manipulating Pixels
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.ecf98df9.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.9c69f0bc.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -338,6 +338,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_hello_triangle/" class="md-nav__link">
+        5. Hello Triangle
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -445,32 +459,32 @@ touch src/renderer.c
 #endif // RENDERER_INCLUDED
 </code></pre>
 <p>Now replace the <code>TODO: Declarations goes here</code> comment with the following struct declaration. This struct will be used to pass information about the pixel buffer we're rendering into to the rendering. This helps keep the number of arguments we need to pass into macros and functions to a minimum. We'll also add a helper function for creating instances of this struct:</p>
-<pre><code class="language-c">typedef struct renderer_target_buffer {
+<pre><code class="language-c">typedef struct RendererTargetBuffer {
     int32_t width;
     int32_t height;
     int32_t bytes_per_pixel;
     uint8_t* pixels;
-} renderer_target_buffer;
+} RendererTargetBuffer;
 
-renderer_target_buffer 
+RendererTargetBuffer 
 renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t* pixels);
 </code></pre>
-<p>Declare the <code>renderer_rect</code> struct below the <code>renderer_target_buffer</code> struct declaration:</p>
-<pre><code class="language-c">typedef struct renderer_rect {
+<p>Declare the <code>RendererRect</code> struct below the <code>RendererTargetBuffer</code> struct declaration:</p>
+<pre><code class="language-c">typedef struct RendererRect {
     int32_t x;
     int32_t y;
     int32_t w;
     int32_t h;
-} renderer_rect;
+} RendererRect;
 </code></pre>
-<p>Add the following macros below the <code>renderer_rect</code> struct. These macros help pack 3 or four channel color values into a single 32 bit integer, as well as indexing the pixel buffer by offset or x,y coordinates:</p>
+<p>Add the following macros below the <code>RendererRect</code> struct. These macros help pack 3 or four channel color values into a single 32 bit integer, as well as indexing the pixel buffer by offset or x,y coordinates:</p>
 <pre><code class="language-c">// Pack 3 color bytes into one uint32
 #define PackColorRGB(r, g, b) (r &amp; 0xff) &lt;&lt; 16 | (g &amp; 0xff) &lt;&lt; 8 | (b &amp; 0xff)
 
 // Pack 4 color bytes into one uint32
 #define PackColorRGBA(r, g, b, a) (a &amp; 0xff) &lt;&lt; 24 | PackColorRGB(r, g, b)
 
-// Index pixel at x, y coordinates within renderer_target_buffer target
+// Index pixel at x, y coordinates within RendererTargetBuffer target
 #define IndexPixel(x, y, target) (x + y * target.width) * target.bytes_per_pixel
 
 // Put pixel at offset into target
@@ -479,15 +493,15 @@ renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_p
 // Put pixel at x,y into target
 #define PutPixelXY(target, x, y, color) PutPixelByteOffset(target, IndexPixel(x, y, target), color)
 </code></pre>
-<p>Below the macro definitions we can add the function declarations. We'll add three functions for now; one to help create the <code>renderer_target_buffer</code> structure and the two others to fill entire window or a part of the window with desired color:</p>
-<pre><code class="language-c">renderer_target_buffer 
+<p>Below the macro definitions we can add the function declarations. We'll add three functions for now; one to help create the <code>RendererTargetBuffer</code> structure and the two others to fill entire window or a part of the window with desired color:</p>
+<pre><code class="language-c">RendererTargetBuffer 
 renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t* pixels);
 
 void
-renderer_fill(renderer_target_buffer buffer, uint32_t color);
+renderer_fill(RendererTargetBuffer buffer, uint32_t color);
 
 void 
-renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color);
+renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color);
 </code></pre>
 <h3 id="rendererc">renderer.c</h3>
 <p>The implementation of <code>src/renderer.c</code> will be fairily straight forward because of the macros and structure we've defined in the header. Put the following content inside the <code>src/renderer.c</code> file:</p>
@@ -496,10 +510,10 @@ renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t c
 #include &lt;stdint.h&gt;
 #include &quot;renderer.h&quot;
 
-renderer_target_buffer
+RendererTargetBuffer
 renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t *pixels)
 {
-    renderer_target_buffer target = {
+    RendererTargetBuffer target = {
         width, height, bytes_per_pixel, pixels
     };
 
@@ -507,7 +521,7 @@ renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_p
 }
 
 void 
-renderer_fill(renderer_target_buffer buffer, uint32_t color)
+renderer_fill(RendererTargetBuffer buffer, uint32_t color)
 {
     uint32_t fill_until = buffer.width * buffer.height * buffer.bytes_per_pixel;
     uint32_t per_pixel_add = buffer.bytes_per_pixel;
@@ -518,7 +532,7 @@ renderer_fill(renderer_target_buffer buffer, uint32_t color)
 }
 
 void 
-renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color)
+renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color)
 {
     for (int y = rect.y; y &lt; rect.y + rect.h; y++)
     {
@@ -536,29 +550,29 @@ renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t c
 <p>We'll make some changes to <code>src/main.c</code> to test the new <code>src/renderer.c</code> implementation. Filling the window with a color like before as well as putting some colored squares in each corner of the window.</p>
 <p>Update <code>src/main.c</code> with the following, put this code between the <code>game_window_surface_lock_pixels(game_window);</code> and <code>game_window_surface_unlock_and_update_pixels(game_window);</code> lines:</p>
 <pre><code class="language-c">int32_t bytes_per_pixel = 4;
-renderer_target_buffer pixel_buffer = 
+RendererTargetBuffer pixel_buffer = 
     renderer_create_target_buffer(game_window-&gt;pixel_buffer_width, game_window-&gt;pixel_buffer_height, bytes_per_pixel, game_window-&gt;pixels);
 
 renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
 
 if (game_window-&gt;pixel_buffer_width != 0)
 {
-    renderer_rect top_left = {
+    RendererRect top_left = {
         0, 0, 32, 32
     };
 
-    renderer_rect top_right = {
+    RendererRect top_right = {
         pixel_buffer.width - 32,
         0, 32, 32
     };
 
-    renderer_rect bottom_left = {
+    RendererRect bottom_left = {
         0, 
         pixel_buffer.height - 32,
         32, 32
     };
 
-    renderer_rect bottom_right = {
+    RendererRect bottom_right = {
         pixel_buffer.width - 32,
         pixel_buffer.height - 32,
         32, 32
@@ -576,8 +590,8 @@ if (game_window-&gt;pixel_buffer_width != 0)
 <p>Now all that's left to do is updating the <code>CMakeLists.txt</code> to include <code>src/renderer.c</code> when building the application. </p>
 <pre><code class="language-cmake">add_executable(back_to_basics src/main.c src/game_window.c src/renderer.c)
 </code></pre>
-<p>Now try to build the application and if everything was alright observe the results, it should look like this:
-<img alt="rendering rectangles" src="../4_assets/test_rectangles.png" /></p>
+<p>Now try to build the application and if everything was alright observe the results, it should look like this:</p>
+<p><img alt="rendering rectangles" src="../4_assets/test_rectangles.png" /></p>
 <h2 id="full-diff-for-this-chapter">Full diff for this chapter</h2>
 <pre><code class="language-diff">modified   CMakeLists.txt
 @@ -7,5 +7,5 @@ set(CMAKE_C_STANDARD 11)
@@ -603,7 +617,7 @@ modified   src/main.c
 -        uint32_t *pixels_32bpp = (uint32_t *)game_window-&gt;pixels;
 -        for (int y = 0; y &lt; game_window-&gt;pixel_buffer_height; y++)
 +        int32_t bytes_per_pixel = 4;
-+        renderer_target_buffer pixel_buffer = 
++        RendererTargetBuffer pixel_buffer = 
 +            renderer_create_target_buffer(game_window-&gt;pixel_buffer_width, game_window-&gt;pixel_buffer_height, bytes_per_pixel, game_window-&gt;pixels);
 +
 +        renderer_fill(pixel_buffer, PackColorRGB(0, 0, 255));
@@ -615,22 +629,22 @@ modified   src/main.c
 -            {
 -                pixels_32bpp[x + row] = 0xff0000ff;
 -            }
-+            renderer_rect top_left = {
++            RendererRect top_left = {
 +                0, 0, 32, 32
 +            };
 +
-+            renderer_rect top_right = {
++            RendererRect top_right = {
 +                pixel_buffer.width - 32,
 +                0, 32, 32
 +            };
 +
-+            renderer_rect bottom_left = {
++            RendererRect bottom_left = {
 +                0, 
 +                pixel_buffer.height - 32,
 +                32, 32
 +            };
 +
-+            renderer_rect bottom_right = {
++            RendererRect bottom_right = {
 +                pixel_buffer.width - 32,
 +                pixel_buffer.height - 32,
 +                32, 32
@@ -650,10 +664,10 @@ new file   src/renderer.c
 +#include &lt;stdint.h&gt;
 +#include &quot;renderer.h&quot;
 +
-+renderer_target_buffer
++RendererTargetBuffer
 +renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t *pixels)
 +{
-+    renderer_target_buffer target = {
++    RendererTargetBuffer target = {
 +        width, height, bytes_per_pixel, pixels
 +    };
 +
@@ -661,7 +675,7 @@ new file   src/renderer.c
 +}
 +
 +void 
-+renderer_fill(renderer_target_buffer buffer, uint32_t color)
++renderer_fill(RendererTargetBuffer buffer, uint32_t color)
 +{
 +    uint32_t fill_until = buffer.width * buffer.height * buffer.bytes_per_pixel;
 +    uint32_t per_pixel_add = buffer.bytes_per_pixel;
@@ -672,7 +686,7 @@ new file   src/renderer.c
 +}
 +
 +void 
-+renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color)
++renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color)
 +{
 +    for (int y = rect.y; y &lt; rect.y + rect.h; y++)
 +    {
@@ -690,19 +704,19 @@ new file   src/renderer.h
 +#ifndef RENDERER_INCLUDED
 +#define RENDERER_INCLUDED
 +
-+typedef struct renderer_target_buffer {
++typedef struct RendererTargetBuffer {
 +    int32_t width;
 +    int32_t height;
 +    int32_t bytes_per_pixel;
 +    uint8_t* pixels;
-+} renderer_target_buffer;
++} RendererTargetBuffer;
 +
-+typedef struct renderer_rect {
++typedef struct RendererRect {
 +    int32_t x;
 +    int32_t y;
 +    int32_t w;
 +    int32_t h;
-+} renderer_rect;
++} RendererRect;
 +
 +// Pack 3 color bytes into one uint32
 +#define PackColorRGB(r, g, b) (r &amp; 0xff) &lt;&lt; 16 | (g &amp; 0xff) &lt;&lt; 8 | (b &amp; 0xff)
@@ -710,7 +724,7 @@ new file   src/renderer.h
 +// Pack 4 color bytes into one uint32
 +#define PackColorRGBA(r, g, b, a) (a &amp; 0xff) &lt;&lt; 24 | PackColorRGB(r, g, b)
 +
-+// Index pixel at x, y coordinates within renderer_target_buffer target
++// Index pixel at x, y coordinates within RendererTargetBuffer target
 +#define IndexPixel(x, y, target) (x + y * target.width) * target.bytes_per_pixel
 +
 +// Put pixel at offset into target
@@ -719,14 +733,14 @@ new file   src/renderer.h
 +// Put pixel at x,y into target
 +#define PutPixelXY(target, x, y, color) PutPixelByteOffset(target, IndexPixel(x, y, target), color)
 +
-+renderer_target_buffer 
++RendererTargetBuffer 
 +renderer_create_target_buffer(int32_t width, int32_t height, int32_t bytes_per_pixel, uint8_t* pixels);
 +
 +void
-+renderer_fill(renderer_target_buffer buffer, uint32_t color);
++renderer_fill(RendererTargetBuffer buffer, uint32_t color);
 +
 +void 
-+renderer_fill_rect(renderer_target_buffer buffer, renderer_rect rect, uint32_t color);
++renderer_fill_rect(RendererTargetBuffer buffer, RendererRect rect, uint32_t color);
 +
 +#endif // RENDERER_INCLUDED
 \ No newline at end of file
@@ -763,6 +777,21 @@ new file   src/renderer.h
           </div>
         </a>
       
+      
+        
+        <a href="../5_hello_triangle/" class="md-footer__link md-footer__link--next" aria-label="Next: 5. Hello Triangle" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              5. Hello Triangle
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
       
     </nav>
   
