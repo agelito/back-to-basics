@@ -12,3 +12,4 @@ nav:
       - 2. Build System: '2_build_system.md'
       - 3. Creating a Window: '3_creating_a_window.md'
       - 4. Manipulating Pixels: '4_manipulating_pixels.md'
+      - 5. Hello Triangle: '5_hello_triangle.md'

@@ -182,6 +182,7 @@ add_executable(back_to_basics src/main.c src/game_window.c src/renderer.c)
 ```
 
 Now try to build the application and if everything was alright observe the results, it should look like this:
+
 ![rendering rectangles](4_assets/test_rectangles.png)
 
 ## Full diff for this chapter
