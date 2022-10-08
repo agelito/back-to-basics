@@ -378,6 +378,19 @@ Update the `math.h` include in `src/renderer.c`:
 #include "math.h"
 ```
 
+We'll also add a convenience function to `src/renderer.h` for defining XY coordinates add the following below the RendererPoint struct definition:
+
+```c
+static inline RendererPoint
+renderer_point_create(int32_t x, int32_t y)
+{
+    RendererPoint result = {
+        x, y};
+
+    return result;
+}
+```
+
 Add required includes to `src/main.c`:
 
 ```c

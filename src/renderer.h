@@ -22,6 +22,15 @@ typedef struct RendererPoint {
     int32_t y;
 } RendererPoint;
 
+static inline RendererPoint
+renderer_point_create(int32_t x, int32_t y)
+{
+    RendererPoint result = {
+        x, y};
+
+    return result;
+}
+
 typedef struct RendererTriangle {
     RendererPoint p0;
     RendererPoint p1;
