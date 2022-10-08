@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 #include "renderer.h"
-#include "math_utils.h"
+#include "math.h"
 
 static inline int32_t 
 signed_area2(RendererPoint p0, RendererPoint p1, RendererPoint p2)

@@ -7,5 +7,5 @@ set(CMAKE_C_STANDARD 11)
 find_package(SDL2 REQUIRED)
 include_directories(back_to_basics ${SDL2_INCLUDE_DIRS})
 
-add_executable(back_to_basics src/main.c src/game_window.c src/renderer.c)
-target_link_libraries(back_to_basics ${SDL2_LIBRARIES})
+add_executable(back_to_basics src/main.c src/game_window.c src/renderer.c src/vertex_transform.c)
+target_link_libraries(back_to_basics ${SDL2_LIBRARIES} m)
